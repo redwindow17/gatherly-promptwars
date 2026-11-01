@@ -1,0 +1,23 @@
+{
+  "$schema": "node_modules/wrangler/config-schema.json",
+  "name": "gatherly-planner",
+  "main": "worker/index.ts",
+  "compatibility_date": "2026-10-30",
+  "compatibility_flags": ["nodejs_compat"],
+  "assets": {
+    "directory": "./dist",
+    "binding": "ASSETS",
+    "not_found_handling": "single-page-application",
+    "run_worker_first": ["/api/*"],
+  },
+  "vars": { "GEMINI_MODEL": "gemini-3.8-flash" },
+  "ratelimits": [
+    { "name": "RATE_LIMITER", "namespace_id": "78260501", "simple": { "limit": 6, "period": 60 } },
+    {
+      "name": "GLOBAL_LIMITER",
+      "namespace_id": "78260502",
+      "simple": { "limit": 40, "period": 60 },
+    },
+  ],
+  "observability": { "enabled": true, "head_sampling_rate": 0.1 },
+}

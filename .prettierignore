@@ -1,0 +1,5 @@
+node_modules
+dist
+.wrangler
+worker/env.d.ts
+package-lock.json
