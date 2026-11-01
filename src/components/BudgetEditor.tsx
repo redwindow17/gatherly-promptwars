@@ -1,4 +1,4 @@
-import { useEffect, useRef, useState } from 'react';
+import { useEffect, useId, useRef, useState } from 'react';
 import { AlertTriangle, ArrowDownRight, ArrowUpRight, Check, Info, PencilLine } from 'lucide-react';
 import type { Plan } from '../domain/types';
 import { budgetSummary } from '../domain/planner';
@@ -11,6 +11,7 @@ interface MoneyInputProps {
   onChange: (value: number) => void;
 }
 function MoneyInput({ amount, label, onChange }: MoneyInputProps) {
+  const errorId = useId();
   const [text, setText] = useState(String(amount / 100));
   const [invalid, setInvalid] = useState(false);
   const skipBlur = useRef(false);
@@ -29,7 +30,8 @@ function MoneyInput({ amount, label, onChange }: MoneyInputProps) {
       return;
     }
     setInvalid(false);
-    onChange(value);
+    setText(String(value / 100));
+    if (value !== amount) onChange(value);
   }
   return (
     <div className="budget-input-wrap">
@@ -57,9 +59,14 @@ function MoneyInput({ amount, label, onChange }: MoneyInputProps) {
             }
           }}
           aria-invalid={invalid}
+          aria-describedby={invalid ? errorId : undefined}
         />
       </div>
-      {invalid ? <span className="input-error">Use ₹0–₹10 crore, up to 2 decimals.</span> : null}
+      {invalid ? (
+        <span className="input-error" id={errorId}>
+          Use ₹0–₹10 crore, up to 2 decimals.
+        </span>
+      ) : null}
     </div>
   );
 }

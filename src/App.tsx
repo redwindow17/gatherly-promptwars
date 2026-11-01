@@ -6,18 +6,14 @@ import {
   CalendarDays,
   Check,
   ChevronRight,
-  CircleHelp,
   Flower2,
   Leaf,
   ListChecks,
   LoaderCircle,
   MapPin,
   NotebookPen,
-  Plus,
   Printer,
-  RefreshCw,
   Sparkles,
-  Trash2,
   Users,
   Wallet,
   X,
@@ -28,17 +24,17 @@ import { validateStoredPlan } from './domain/validation';
 import { starterAdvice } from './domain/starter';
 import { exportPlanCalendar } from './domain/calendar';
 import { loadPlans, savePlans } from './lib/storage';
+import { GatheringSidebar } from './components/GatheringSidebar';
+import { WelcomeStory } from './components/WelcomeStory';
 import { BriefForm } from './components/BriefForm';
 import { BudgetEditor } from './components/BudgetEditor';
-import {
-  AIActivity,
-  Ideas,
-  Overview,
-  PrintReport,
-  Timeline,
-  Vendors,
-  type WorkspaceTab,
-} from './components/WorkspaceViews';
+import { Overview } from './components/workspace/Overview';
+import { Timeline } from './components/workspace/Timeline';
+import { Vendors } from './components/workspace/Vendors';
+import { Ideas } from './components/workspace/Ideas';
+import { AIActivity } from './components/workspace/AIActivity';
+import { PrintReport } from './components/workspace/PrintReport';
+import type { WorkspaceTab } from './components/workspace/types';
 import { EVENT_LABELS, dateLabel, saveTextFile } from './components/format';
 
 interface Health {
@@ -66,87 +62,6 @@ const tabs: { id: WorkspaceTab; label: string; icon: typeof Leaf }[] = [
   { id: 'ideas', label: 'Ideas', icon: Flower2 },
   { id: 'activity', label: 'AI activity', icon: Sparkles },
 ];
-
-function GatheringMark() {
-  return (
-    <span className="brand-mark" aria-hidden="true">
-      <svg viewBox="0 0 36 36" fill="none">
-        <path
-          d="M18 29V14M18 23C8 23 5 17 6 10c7 0 12 5 12 13ZM18 19C18 10 23 6 30 6c0 8-4 13-12 13Z"
-          stroke="currentColor"
-          strokeWidth="1.5"
-          strokeLinecap="round"
-          strokeLinejoin="round"
-        />
-        <path
-          d="m10 15 8 8m7-11-7 7"
-          stroke="currentColor"
-          strokeWidth="1.2"
-          strokeLinecap="round"
-        />
-      </svg>
-    </span>
-  );
-}
-
-function WelcomeStory() {
-  return (
-    <div className="welcome-story">
-      <div className="welcome-kicker">
-        <span className="short-line" />
-        <span className="eyebrow">GOOD TIMES START HERE</span>
-      </div>
-      <h1>
-        For the moments
-        <br />
-        that bring us
-        <br />
-        <em>together.</em>
-      </h1>
-      <p className="welcome-description">
-        From the first idea to the final little detail. A thoughtful home for your next celebration.
-      </p>
-      <div className="welcome-illustration" aria-hidden="true">
-        <svg viewBox="0 0 280 150" fill="none">
-          <path d="M18 131c60-13 121-45 190-108" stroke="#9cae96" strokeWidth="1.1" />
-          <path
-            d="M77 110c-29-4-44-22-41-47 26 2 44 18 41 47ZM116 93c-15-25-12-48 8-65 16 23 15 46-8 65ZM157 65c-1-27 12-44 39-47-2 26-15 43-39 47ZM83 108c22-20 45-22 66-5-19 18-42 22-66 5ZM151 69c29-10 53-5 66 18-27 9-50 4-66-18Z"
-            fill="#e6eadf"
-            stroke="#b0bba4"
-            strokeWidth="1"
-          />
-          <circle cx="228" cy="37" r="8" stroke="#c28b71" strokeWidth="1" />
-          <circle cx="246" cy="62" r="3" fill="#c28b71" />
-          <path d="M225 107h12m-6-6v12" stroke="#c28b71" strokeWidth="1" />
-        </svg>
-      </div>
-      <div className="welcome-promises">
-        <div>
-          <span>01</span>
-          <p>
-            <strong>A plan that fits.</strong>Your priorities. Your people. Your budget.
-          </p>
-        </div>
-        <div>
-          <span>02</span>
-          <p>
-            <strong>The details, in order.</strong>Budgets, timelines, and thoughtful checklists.
-          </p>
-        </div>
-        <div>
-          <span>03</span>
-          <p>
-            <strong>More room to enjoy.</strong>Less keeping it all in your head.
-          </p>
-        </div>
-      </div>
-      <div className="welcome-note">
-        <Sparkles size={15} />
-        <span>A little help from Gemini. A lot of you.</span>
-      </div>
-    </div>
-  );
-}
 
 export default function App() {
   const [initial] = useState(boot);
@@ -351,128 +266,20 @@ export default function App() {
         Skip to your gathering
       </a>
       <div className="app-shell">
-        <aside className="sidebar" aria-label="Saved gatherings">
-          <a
-            className="brand"
-            href="#main-content"
-            onClick={(event) => {
-              event.preventDefault();
-              if (!busy) {
-                if (active) openPlan(active.id);
-                else newPlan();
-              }
-            }}
-          >
-            <GatheringMark />
-            <span>
-              gatherly<span className="brand-period">.</span>
-            </span>
-          </a>
-          <p className="brand-tagline">Good things happen together.</p>
-          <button className="new-gathering" onClick={newPlan} disabled={busy}>
-            <Plus size={17} strokeWidth={1.5} />
-            <span>New gathering</span>
-            <ArrowRight size={15} />
-          </button>
-          <div className="saved-nav-header">
-            <span className="eyebrow">YOUR GATHERINGS</span>
-            <span className="saved-count">{plans.length}</span>
-          </div>
-          <nav className="saved-list" aria-label="Local saved plans">
-            {plans.length ? (
-              plans.map((plan) => (
-                <div
-                  className={`saved-item ${!formMode && activeId === plan.id ? 'active' : ''}`}
-                  key={plan.id}
-                >
-                  <button
-                    className="saved-plan-button"
-                    onClick={() => openPlan(plan.id)}
-                    disabled={busy}
-                  >
-                    <span className="saved-plan-icon">
-                      {plan.brief.type === 'birthday' ? (
-                        <Flower2 size={18} strokeWidth={1.4} />
-                      ) : plan.brief.type === 'community' ? (
-                        <Users size={18} strokeWidth={1.4} />
-                      ) : (
-                        <Leaf size={18} strokeWidth={1.4} />
-                      )}
-                    </span>
-                    <span className="saved-plan-copy">
-                      <strong>{plan.brief.title}</strong>
-                      <small>
-                        {dateLabel(plan.brief.date, {
-                          day: 'numeric',
-                          month: 'short',
-                          year: 'numeric',
-                        })}
-                      </small>
-                    </span>
-                    <ChevronRight className="saved-chevron" size={14} />
-                  </button>
-                  <button
-                    className="delete-plan"
-                    disabled={busy}
-                    aria-label={`Delete local plan: ${plan.brief.title}`}
-                    onClick={() => removePlan(plan)}
-                  >
-                    <Trash2 size={13} />
-                  </button>
-                </div>
-              ))
-            ) : (
-              <div className="empty-saved">
-                <NotebookPen size={24} strokeWidth={1.1} />
-                <p>
-                  A good day starts
-                  <br />
-                  with a little plan.
-                </p>
-                <span>
-                  Your saved gatherings
-                  <br />
-                  will live here.
-                </span>
-              </div>
-            )}
-          </nav>
-          <div className="sidebar-bottom">
-            <div className="local-storage-note">
-              <span className="status-dot" />
-              <span>Saved locally in this browser</span>
-            </div>
-            <p>Up to 12 plans. No account needed.</p>
-            <div className="connection-row">
-              <span>
-                <Sparkles size={13} />
-                {healthBusy
-                  ? 'Checking Gemini…'
-                  : health?.aiConfigured
-                    ? 'Gemini connected'
-                    : health
-                      ? 'Starter mode available'
-                      : 'Connection not checked'}
-              </span>
-              <button
-                className="icon-button"
-                disabled={healthBusy || busy}
-                onClick={() => void checkHealth()}
-                aria-label="Check Gemini connection"
-              >
-                <RefreshCw size={13} className={healthBusy ? 'spin' : ''} />
-              </button>
-            </div>
-            <button
-              className="help-button"
-              onClick={() => setShowHelp((value) => !value)}
-              aria-expanded={showHelp}
-            >
-              <CircleHelp size={15} />A note about your plans
-              <ArrowRight size={13} />
-            </button>
-          </div>
-        </aside>
+        <GatheringSidebar
+          plans={plans}
+          activeId={activeId}
+          formMode={formMode !== null}
+          busy={busy}
+          healthBusy={healthBusy}
+          health={health}
+          showHelp={showHelp}
+          newPlan={newPlan}
+          openPlan={openPlan}
+          removePlan={removePlan}
+          checkHealth={checkHealth}
+          toggleHelp={() => setShowHelp((value) => !value)}
+        />
         <div className="main-shell">
           <header className="topbar">
             <div className="breadcrumb">

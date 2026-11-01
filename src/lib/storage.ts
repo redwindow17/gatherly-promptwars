@@ -4,6 +4,9 @@ import { validateStoredPlan } from '../domain/validation';
 const STORAGE_KEY = 'gatherly.plans.v1';
 const MAX_PLANS = 12;
 const MAX_SERIALIZED_LENGTH = 4_000_000;
+// Cache only the exact validated bytes, never mutable plan objects. Every save
+// still reads storage so another tab's replacement cannot bypass recovery.
+const validatedPayloads = new WeakMap<Storage, string>();
 
 function storage(): Storage {
   try {
@@ -64,7 +67,9 @@ export function loadPlans(): Plan[] {
   const raw = readRaw(target);
   if (raw === null) return [];
   try {
-    return parseSaved(raw);
+    const plans = parseSaved(raw);
+    validatedPayloads.set(target, raw);
+    return plans;
   } catch {
     preserveCorruptPayload(target, raw);
     try {
@@ -93,7 +98,11 @@ export function savePlans(plans: Plan[]): void {
   // Re-check on every save: a failed load or a separate tab may have left
   // recoverable damaged data here. Never replace it before a backup succeeds.
   const previous = readRaw(target);
-  if (previous !== null) {
+  if (previous === payload) {
+    validatedPayloads.set(target, payload);
+    return;
+  }
+  if (previous !== null && validatedPayloads.get(target) !== previous) {
     try {
       parseSaved(previous);
     } catch {
@@ -102,6 +111,7 @@ export function savePlans(plans: Plan[]): void {
   }
   try {
     target.setItem(STORAGE_KEY, payload);
+    validatedPayloads.set(target, payload);
   } catch {
     throw new Error(
       'The plan could not be saved. Browser storage may be full or disabled. Keep this page open and free some space before trying again.',

@@ -53,6 +53,92 @@ afterEach(() => {
 });
 
 describe('UI persistence guarantees', () => {
+  it('associates an invalid budget amount with its correction message', async () => {
+    const user = userEvent.setup();
+    const original = fixture();
+    savePlans([original]);
+    render(<App />);
+    await screen.findByText('Gemini connected');
+    await user.click(screen.getByRole('button', { name: 'Budget' }));
+    const amount = screen.getByRole('textbox', {
+      name: `${original.budgetItems[0].category} amount in rupees`,
+    });
+    await user.clear(amount);
+    await user.type(amount, '-1');
+    await user.tab();
+    expect(amount.getAttribute('aria-invalid')).toBe('true');
+    const description = amount.getAttribute('aria-describedby');
+    expect(description).toBeTruthy();
+    expect(document.getElementById(description!)?.textContent).toMatch(/2 decimals/);
+    expect(loadPlans()[0].budgetItems[0].amountPaise).toBe(original.budgetItems[0].amountPaise);
+  });
+
+  it('preserves budget, task, and vendor edits across view changes and reload', async () => {
+    const user = userEvent.setup();
+    const original = fixture();
+    savePlans([original]);
+    const app = render(<App />);
+    await screen.findByText('Gemini connected');
+    await user.click(screen.getByRole('button', { name: 'Budget' }));
+    const amount = screen.getByRole('textbox', {
+      name: `${original.budgetItems[0].category} amount in rupees`,
+    });
+    await user.clear(amount);
+    await user.type(amount, '500.25');
+    await user.tab();
+    await user.click(screen.getByRole('button', { name: /^Timeline/ }));
+    await user.click(
+      screen.getByRole('checkbox', { name: `Mark ${original.tasks[0].title} complete` }),
+    );
+    await user.click(screen.getByRole('button', { name: 'Vendors' }));
+    await user.click(screen.getByRole('checkbox', { name: original.vendors[0].questions[0].text }));
+    app.unmount();
+    render(<App />);
+    await screen.findByText('Gemini connected');
+    const [saved] = loadPlans();
+    expect(saved.budgetItems[0].amountPaise).toBe(50025);
+    expect(saved.tasks[0].done).toBe(true);
+    expect(saved.vendors[0].questions[0].done).toBe(true);
+    await user.click(screen.getByRole('button', { name: /^Timeline/ }));
+    expect(
+      (
+        screen.getByRole('checkbox', {
+          name: `Mark ${original.tasks[0].title} incomplete`,
+        }) as HTMLInputElement
+      ).checked,
+    ).toBe(true);
+    await user.click(screen.getByRole('button', { name: 'Vendors' }));
+    expect(
+      (
+        screen.getByRole('checkbox', {
+          name: original.vendors[0].questions[0].text,
+        }) as HTMLInputElement
+      ).checked,
+    ).toBe(true);
+  }, 20_000);
+
+  it('does not turn an unchanged budget field into an unsaved edit when storage is full', async () => {
+    const user = userEvent.setup();
+    const original = fixture();
+    savePlans([original]);
+    const payload = localStorage.getItem(storageKey);
+    render(<App />);
+    await screen.findByText('Gemini connected');
+    await user.click(screen.getByRole('button', { name: 'Budget' }));
+    vi.spyOn(Storage.prototype, 'setItem').mockImplementation(() => {
+      throw new DOMException('Quota exceeded', 'QuotaExceededError');
+    });
+    await user.click(
+      screen.getByRole('textbox', {
+        name: `${original.budgetItems[0].category} amount in rupees`,
+      }),
+    );
+    await user.tab();
+    expect(screen.queryByText('Changes in this tab only')).toBeNull();
+    expect(screen.queryByRole('button', { name: 'Dismiss storage warning' })).toBeNull();
+    expect(localStorage.getItem(storageKey)).toBe(payload);
+  });
+
   it('keeps the unsaved status after a quota warning is dismissed, until a write succeeds', async () => {
     const user = userEvent.setup();
     const original = fixture();

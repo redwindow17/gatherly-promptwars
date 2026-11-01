@@ -1,4 +1,4 @@
-import { z } from 'zod';
+import * as z from 'zod/mini';
 import type { EventBrief } from '../src/domain/types';
 import { validateAdvice } from '../src/domain/validation';
 import { ADVICE_JSON_SCHEMA, eventPrompt, SYSTEM_PROMPT } from './prompt';
@@ -11,13 +11,12 @@ const providerResponse = z.object({
         finishReason: z.literal('STOP'),
         content: z.object({
           parts: z
-            .array(z.object({ text: z.string().optional(), thought: z.boolean().optional() }))
-            .max(32),
+            .array(z.object({ text: z.optional(z.string()), thought: z.optional(z.boolean()) }))
+            .check(z.maxLength(32)),
         }),
       }),
     )
-    .min(1)
-    .max(8),
+    .check(z.minLength(1), z.maxLength(8)),
 });
 
 export async function generateAdvice(
@@ -90,7 +89,8 @@ export async function generateAdvice(
   } catch (error) {
     if (controller.signal.aborted)
       throw new HTTPError(504, 'Planning took too long. Your existing work is safe. Please retry.');
-    if (error instanceof HTTPError && error.status !== 413) throw error;
+    // Invalid encoding/oversized bytes came from the provider, not the event brief.
+    if (error instanceof HTTPError && error.status !== 413 && error.status !== 400) throw error;
     throw new HTTPError(
       502,
       'The AI service is temporarily unavailable. Your existing plans are safe; retry or use a starter plan.',

@@ -1,4 +1,6 @@
 import type { EventType } from '../domain/types';
+import { localToday } from '../domain/dates';
+export { localToday } from '../domain/dates';
 
 export const EVENT_LABELS: Record<EventType, string> = {
   wedding: 'Wedding',
@@ -13,15 +15,25 @@ const rupees = new Intl.NumberFormat('en-IN', {
 export function money(paise: number): string {
   return rupees.format(paise / 100);
 }
+const dateFormats = new Map<string, Intl.DateTimeFormat>();
 export function dateLabel(
   date: string,
-  options: Intl.DateTimeFormatOptions = { day: 'numeric', month: 'long', year: 'numeric' },
+  options: Pick<Intl.DateTimeFormatOptions, 'day' | 'month' | 'year' | 'weekday'> = {
+    day: 'numeric',
+    month: 'long',
+    year: 'numeric',
+  },
 ): string {
-  return new Date(`${date}T12:00:00`).toLocaleDateString('en-IN', options);
-}
-export function localToday(): string {
-  const now = new Date();
-  return `${now.getFullYear()}-${String(now.getMonth() + 1).padStart(2, '0')}-${String(now.getDate()).padStart(2, '0')}`;
+  const key = JSON.stringify(options);
+  let formatter = dateFormats.get(key);
+  if (!formatter) {
+    // A calendar day has no instant/timezone; keep it stable when the device zone changes.
+    formatter = new Intl.DateTimeFormat('en-IN', { ...options, timeZone: 'UTC' });
+    if (dateFormats.size >= 8) dateFormats.delete(dateFormats.keys().next().value!);
+    dateFormats.set(key, formatter);
+  }
+  const parsed = new Date(`${date}T12:00:00Z`);
+  return Number.isFinite(parsed.getTime()) ? formatter.format(parsed) : 'Invalid Date';
 }
 export function daysTo(date: string): number {
   return Math.round(

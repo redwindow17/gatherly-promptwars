@@ -23,15 +23,25 @@ export async function readBounded(
       if (done) break;
       total += value.byteLength;
       if (total > maxBytes) {
-        await reader.cancel();
         throw new HTTPError(
           413,
           'This request is too large. Shorten the event notes and try again.',
         );
       }
-      result += decoder.decode(value, { stream: true });
+      try {
+        result += decoder.decode(value, { stream: true });
+      } catch {
+        throw new HTTPError(400, 'The JSON body must contain valid UTF-8 text.');
+      }
     }
-    return result + decoder.decode();
+    try {
+      return result + decoder.decode();
+    } catch {
+      throw new HTTPError(400, 'The JSON body must contain valid UTF-8 text.');
+    }
+  } catch (error) {
+    await reader.cancel(error).catch(() => {});
+    throw error;
   } finally {
     reader.releaseLock();
   }

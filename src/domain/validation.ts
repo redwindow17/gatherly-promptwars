@@ -1,107 +1,67 @@
-import { z } from 'zod';
+import * as z from 'zod/mini';
+import english from 'zod/v4/locales/en.js';
 import type { AIAdvice, EventBrief, Plan } from './types';
+import { isCalendarDate, isIanaTimeZone, localToday } from './dates';
+export { isCalendarDate, localToday, shiftDate } from './dates';
+
+// Mini avoids shipping unused schema classes while retaining readable errors.
+z.config(english());
 
 export const MAX_MONEY_PAISE = 10_000_000_000;
-const money = z.number().finite().int().min(0).max(MAX_MONEY_PAISE);
-const text = (max: number, min = 1) => z.string().trim().min(min).max(max);
-const identifier = text(100).regex(/^[A-Za-z0-9_-]+$/, 'Invalid identifier');
+const money = z.int().check(z.minimum(0), z.maximum(MAX_MONEY_PAISE));
+const text = (max: number, min = 1) =>
+  z.string().check(z.trim(), z.minLength(min), z.maxLength(max));
+const identifier = text(100).check(z.regex(/^[A-Za-z0-9_-]+$/, 'Invalid identifier'));
 
-/** Date-only values stay in UTC for arithmetic, so daylight saving cannot shift a task. */
-export function isCalendarDate(value: string): boolean {
-  if (!/^\d{4}-\d{2}-\d{2}$/.test(value)) return false;
-  const parsed = new Date(`${value}T00:00:00.000Z`);
-  return Number.isFinite(parsed.getTime()) && parsed.toISOString().slice(0, 10) === value;
-}
+const calendarDate = z
+  .string()
+  .check(z.refine(isCalendarDate, 'Use a real date in YYYY-MM-DD format'));
+const briefSchema = z.strictObject({
+  title: text(120, 2),
+  type: z.enum(['wedding', 'birthday', 'community']),
+  date: calendarDate,
+  location: text(120, 2),
+  guests: z.int().check(z.minimum(1), z.maximum(10_000)),
+  budgetPaise: money.check(z.minimum(10_000)),
+  priorities: z.array(text(80)).check(z.maxLength(5)),
+  notes: text(2000, 0),
+  timeZone: z.optional(text(100).check(z.refine(isIanaTimeZone, 'Use a valid IANA time zone'))),
+});
 
-function isIanaTimeZone(value: string): boolean {
-  if (!/^[A-Za-z][A-Za-z0-9_+-]*(?:\/[A-Za-z0-9_+-]+)*$/.test(value)) return false;
-  try {
-    new Intl.DateTimeFormat('en-US', { timeZone: value });
-    return true;
-  } catch {
-    return false;
-  }
-}
+const ideaSchema = z.strictObject({ title: text(120), description: text(1000) });
+const adviceSchema = z.strictObject({
+  summary: text(1600),
+  budget: z
+    .array(
+      z.strictObject({
+        category: text(80),
+        weight: z.number().check(z.minimum(0.1), z.maximum(100)),
+        rationale: text(500),
+      }),
+    )
+    .check(z.minLength(3), z.maxLength(12)),
+  tasks: z
+    .array(
+      z.strictObject({
+        title: text(160),
+        daysBefore: z.int().check(z.minimum(0), z.maximum(1826)),
+        owner: text(80),
+      }),
+    )
+    .check(z.minLength(3), z.maxLength(30)),
+  vendors: z
+    .array(
+      z.strictObject({
+        category: text(80),
+        questions: z.array(text(300)).check(z.minLength(1), z.maxLength(8)),
+      }),
+    )
+    .check(z.minLength(1), z.maxLength(12)),
+  ideas: z.array(ideaSchema).check(z.minLength(1), z.maxLength(12)),
+  cautions: z.array(text(500)).check(z.maxLength(10)),
+});
 
-export function localToday(now = new Date(), timeZone?: string): string {
-  if (!Number.isFinite(now.getTime())) throw new Error('Choose a valid planning date.');
-  if (timeZone !== undefined) {
-    if (!isIanaTimeZone(timeZone)) throw new Error('Choose a valid IANA time zone.');
-    const parts = new Intl.DateTimeFormat('en-US', {
-      timeZone,
-      calendar: 'iso8601',
-      numberingSystem: 'latn',
-      year: 'numeric',
-      month: '2-digit',
-      day: '2-digit',
-    }).formatToParts(now);
-    const part = (type: Intl.DateTimeFormatPartTypes) =>
-      parts.find((value) => value.type === type)!.value;
-    return `${part('year').padStart(4, '0')}-${part('month')}-${part('day')}`;
-  }
-  // Legacy briefs without a zone retain their runtime-local interpretation.
-  return `${now.getFullYear()}-${String(now.getMonth() + 1).padStart(2, '0')}-${String(now.getDate()).padStart(2, '0')}`;
-}
-
-export function shiftDate(date: string, days: number): string {
-  const parsed = new Date(`${date}T00:00:00.000Z`);
-  parsed.setUTCDate(parsed.getUTCDate() + days);
-  return parsed.toISOString().slice(0, 10);
-}
-
-const calendarDate = z.string().refine(isCalendarDate, 'Use a real date in YYYY-MM-DD format');
-const briefSchema = z
-  .object({
-    title: text(120, 2),
-    type: z.enum(['wedding', 'birthday', 'community']),
-    date: calendarDate,
-    location: text(120, 2),
-    guests: z.number().finite().int().min(1).max(10_000),
-    budgetPaise: money.min(10_000),
-    priorities: z.array(text(80)).max(5),
-    notes: text(2000, 0),
-    timeZone: text(100).refine(isIanaTimeZone, 'Use a valid IANA time zone').optional(),
-  })
-  .strict();
-
-const ideaSchema = z.object({ title: text(120), description: text(1000) }).strict();
-const adviceSchema = z
-  .object({
-    summary: text(1600),
-    budget: z
-      .array(
-        z
-          .object({
-            category: text(80),
-            weight: z.number().finite().min(0.1).max(100),
-            rationale: text(500),
-          })
-          .strict(),
-      )
-      .min(3)
-      .max(12),
-    tasks: z
-      .array(
-        z
-          .object({
-            title: text(160),
-            daysBefore: z.number().int().min(0).max(1826),
-            owner: text(80),
-          })
-          .strict(),
-      )
-      .min(3)
-      .max(30),
-    vendors: z
-      .array(z.object({ category: text(80), questions: z.array(text(300)).min(1).max(8) }).strict())
-      .min(1)
-      .max(12),
-    ideas: z.array(ideaSchema).min(1).max(12),
-    cautions: z.array(text(500)).max(10),
-  })
-  .strict();
-
-function parse<T>(schema: z.ZodType<T>, value: unknown, label: string): T {
+function parse<T>(schema: z.ZodMiniType<T>, value: unknown, label: string): T {
   const result = schema.safeParse(value);
   if (result.success) return result.data;
   const issue = result.error.issues[0];
@@ -126,81 +86,76 @@ export function validateAdvice(value: unknown): AIAdvice {
 }
 
 const planSchema = z
-  .object({
+  .strictObject({
     id: identifier,
-    createdAt: z.string().datetime(),
+    createdAt: z.iso.datetime(),
     brief: briefSchema,
     budgetItems: z
       .array(
-        z
-          .object({ id: identifier, category: text(80), amountPaise: money, rationale: text(500) })
-          .strict(),
+        z.strictObject({
+          id: identifier,
+          category: text(80),
+          amountPaise: money,
+          rationale: text(500),
+        }),
       )
-      .min(1)
-      .max(12),
+      .check(z.minLength(1), z.maxLength(12)),
     reservePaise: money,
     tasks: z
       .array(
-        z
-          .object({
-            id: identifier,
-            title: text(160),
-            date: calendarDate,
-            owner: text(80),
-            done: z.boolean(),
-            urgent: z.boolean(),
-          })
-          .strict(),
+        z.strictObject({
+          id: identifier,
+          title: text(160),
+          date: calendarDate,
+          owner: text(80),
+          done: z.boolean(),
+          urgent: z.boolean(),
+        }),
       )
-      .min(1)
-      .max(30),
+      .check(z.minLength(1), z.maxLength(30)),
     vendors: z
       .array(
-        z
-          .object({
-            id: identifier,
-            category: text(80),
-            questions: z
-              .array(z.object({ id: identifier, text: text(300), done: z.boolean() }).strict())
-              .min(1)
-              .max(8),
-          })
-          .strict(),
+        z.strictObject({
+          id: identifier,
+          category: text(80),
+          questions: z
+            .array(z.strictObject({ id: identifier, text: text(300), done: z.boolean() }))
+            .check(z.minLength(1), z.maxLength(8)),
+        }),
       )
-      .min(1)
-      .max(12),
-    ideas: z.array(ideaSchema).min(1).max(12),
+      .check(z.minLength(1), z.maxLength(12)),
+    ideas: z.array(ideaSchema).check(z.minLength(1), z.maxLength(12)),
     summary: text(1600),
-    cautions: z.array(text(500)).max(10),
+    cautions: z.array(text(500)).check(z.maxLength(10)),
     source: z.enum(['gemini', 'starter']),
-    ai: z
-      .object({ prompt: text(12_000), response: text(50_000), model: text(100) })
-      .strict()
-      .optional(),
+    ai: z.optional(
+      z.strictObject({ prompt: text(12_000), response: text(50_000), model: text(100) }),
+    ),
   })
-  .strict()
-  .superRefine((plan, context) => {
-    const ids = [
-      plan.id,
-      ...plan.budgetItems.map((item) => item.id),
-      ...plan.tasks.map((task) => task.id),
-      ...plan.vendors.flatMap((vendor) => [
-        vendor.id,
-        ...vendor.questions.map((question) => question.id),
-      ]),
-    ];
-    if (new Set(ids).size !== ids.length)
-      context.addIssue({
-        code: z.ZodIssueCode.custom,
-        message: 'Each plan item needs a unique identifier',
-      });
-    if (plan.tasks.some((task) => task.date > plan.brief.date))
-      context.addIssue({
-        code: z.ZodIssueCode.custom,
-        path: ['tasks'],
-        message: 'Planning tasks cannot fall after the event',
-      });
-  });
+  .check(
+    z.superRefine((plan, context) => {
+      const ids = [
+        plan.id,
+        ...plan.budgetItems.map((item) => item.id),
+        ...plan.tasks.map((task) => task.id),
+        ...plan.vendors.flatMap((vendor) => [
+          vendor.id,
+          ...vendor.questions.map((question) => question.id),
+        ]),
+      ];
+      if (new Set(ids).size !== ids.length)
+        context.addIssue({
+          code: 'custom',
+          message: 'Each plan item needs a unique identifier',
+        });
+      if (plan.tasks.some((task) => task.date > plan.brief.date))
+        context.addIssue({
+          code: 'custom',
+          path: ['tasks'],
+          message: 'Planning tasks cannot fall after the event',
+        });
+    }),
+  );
 
 /** Historical plans remain readable: future-date rules apply only to new briefs. */
 export function validateStoredPlan(value: unknown): Plan {

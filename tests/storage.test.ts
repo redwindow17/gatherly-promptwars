@@ -55,6 +55,28 @@ beforeEach(() => {
 });
 afterEach(() => vi.unstubAllGlobals());
 describe('versioned plan persistence', () => {
+  it('keeps an unchanged saved plan available even if further writes are blocked', () => {
+    savePlans([fixture]);
+    const previous = data.get(key);
+    vi.spyOn(localStorage, 'setItem').mockImplementation(() => {
+      throw new DOMException('Quota exceeded', 'QuotaExceededError');
+    });
+    expect(() => savePlans([structuredClone(fixture)])).not.toThrow();
+    expect(data.get(key)).toBe(previous);
+    expect(loadPlans()).toEqual([fixture]);
+  });
+  it('rechecks externally replaced data before overwriting the same storage object', () => {
+    savePlans([fixture]);
+    data.set(key, 'damaged by another tab');
+    vi.spyOn(localStorage, 'setItem').mockImplementation(() => {
+      throw new DOMException('Quota exceeded', 'QuotaExceededError');
+    });
+    expect(() => savePlans([{ ...fixture, summary: 'Changed in this tab' }])).toThrow(
+      /recover|original/i,
+    );
+    expect(data.get(key)).toBe('damaged by another tab');
+  });
+
   it('starts empty and roundtrips edited values and completed tasks', () => {
     expect(loadPlans()).toEqual([]);
     const saved = structuredClone(fixture);

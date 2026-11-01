@@ -70,6 +70,25 @@ function provider(value: unknown = advice) {
 }
 
 describe('planning API boundary', () => {
+  it('keeps a malformed upstream encoding classified as a provider failure', async () => {
+    const fetcher = vi
+      .fn<typeof fetch>()
+      .mockResolvedValue(new Response(new Uint8Array([0xc3, 0x28])));
+    const response = await handleApi(req(), env, fetcher);
+    expect(response.status).toBe(502);
+    expect(await response.text()).toContain('existing plans are safe');
+  });
+  it('rejects malformed UTF-8 as client input rather than a provider outage', async () => {
+    const request = new Request('https://gatherly.example/api/plan', {
+      method: 'POST',
+      headers: { 'content-type': 'application/json', origin: 'https://gatherly.example' },
+      body: new Uint8Array([0x7b, 0x22, 0x78, 0x22, 0x3a, 0x22, 0xc3, 0x28, 0x22, 0x7d]),
+    });
+    const response = await handleApi(request, env, provider());
+    expect(response.status).toBe(400);
+    expect(await response.text()).toMatch(/UTF-8|encoding/i);
+  });
+
   it('times out a stalled provider request and preserves a controlled error', async () => {
     const fetcher = vi.fn<typeof fetch>().mockImplementation(
       (_url, options) =>
