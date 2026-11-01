@@ -1,0 +1,219 @@
+<template>
+  <style>
+    #root {
+      position: relative;
+      width: 1920px;
+      height: 1080px;
+      overflow: hidden;
+      container-type: size;
+      color: #F8F7F3;
+    }
+
+    #g01-welcome-ground {
+      position: absolute;
+      inset: 0;
+      background: #3A4034;
+      container-type: size;
+    }
+
+    #g01-welcome-topbar {
+      position: absolute;
+      top: 6.666667cqh;
+      left: 5cqw;
+      right: 5cqw;
+      height: 12.037037cqh;
+    }
+
+    #g01-welcome-wordmark {
+      position: absolute;
+      top: 0;
+      left: 0;
+      margin: 0;
+      font-family: 'Gatherly Serif', serif;
+      font-size: 2.1875cqw;
+      font-weight: 500;
+      line-height: 1;
+      letter-spacing: -0.02em;
+      color: #F8F7F3;
+    }
+
+    #g01-welcome-top-rule {
+      position: absolute;
+      top: 5.185185cqh;
+      left: 0;
+      width: 78.125cqw;
+      height: 2px;
+      background: #6B765F;
+    }
+
+    #g01-welcome-stamp {
+      position: absolute;
+      top: 0;
+      right: 0;
+      display: grid;
+      place-items: center;
+      box-sizing: border-box;
+      width: 6.770833cqw;
+      height: 6.770833cqw;
+      border: 2px solid #6B765F;
+      border-radius: 50%;
+      font-family: 'Gatherly Serif', serif;
+      font-size: 3.5cqw;
+      font-weight: 500;
+      line-height: 1;
+      color: #F8F7F3;
+    }
+
+    #g01-welcome-headline {
+      position: absolute;
+      top: 22.407407cqh;
+      left: 5cqw;
+      width: 27.083333cqw;
+      margin: 0;
+      font-family: 'Gatherly Serif', serif;
+      font-size: 4.895833cqw;
+      font-weight: 500;
+      line-height: 0.97;
+      letter-spacing: -0.02em;
+      color: #F8F7F3;
+    }
+
+    #g01-welcome-less,
+    #g01-welcome-more {
+      display: block;
+    }
+
+    #g01-welcome-less {
+      color: #D5DAD0;
+    }
+
+    #g01-welcome-more {
+      margin-top: 1.979167cqw;
+    }
+
+    [data-welcome-line] {
+      display: block;
+      white-space: nowrap;
+    }
+
+    #g01-welcome-product {
+      position: absolute;
+      top: 22.407407cqh;
+      left: 34.6875cqw;
+      width: 60.3125cqw;
+      height: 58.148148cqh;
+      box-sizing: border-box;
+      overflow: hidden;
+      border: 2px solid #D5DAD0;
+      border-radius: 6px;
+      background: #F8F7F3;
+    }
+
+    #g01-welcome-product-image {
+      display: block;
+      width: 100%;
+      height: 100%;
+      object-fit: contain;
+    }
+
+    #g01-welcome-support {
+      position: absolute;
+      top: 68.703704cqh;
+      left: 5cqw;
+      width: 26.041667cqw;
+      margin: 0;
+      font-family: 'Gatherly Serif', serif;
+      font-size: 1.56cqw;
+      font-weight: 400;
+      line-height: 1.38;
+      color: #F8F7F3;
+    }
+
+    #g01-welcome-support span {
+      display: block;
+      white-space: nowrap;
+    }
+
+    #g01-welcome-footer {
+      position: absolute;
+      top: 92.592593cqh;
+      left: 5cqw;
+      right: 5cqw;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      font-family: 'Gatherly Sans', sans-serif;
+      font-size: 1.46cqw;
+      font-weight: 500;
+      line-height: 1;
+      letter-spacing: 0.14em;
+      color: #D5DAD0;
+    }
+
+    #g01-welcome-footer::before {
+      content: "";
+      position: absolute;
+      top: -1.851852cqh;
+      left: 0;
+      right: 0;
+      height: 2px;
+      background: #6B765F;
+    }
+  </style>
+
+  <div data-hf-id="hf-4kq4" id="root" data-composition-id="01-welcome" data-width="1920" data-height="1080" data-duration="10">
+    <div data-hf-id="hf-q1h0" id="g01-welcome-ground" class="clip" data-start="0" data-duration="10" data-track-index="0"></div>
+
+    <div data-hf-id="hf-89iw" id="g01-welcome-topbar" class="clip" data-start="0" data-duration="10" data-track-index="1">
+      <p data-hf-id="hf-8iyp" id="g01-welcome-wordmark">Gatherly</p>
+      <div data-hf-id="hf-pnno" id="g01-welcome-top-rule" aria-hidden="true"></div>
+      <div data-hf-id="hf-khk6" id="g01-welcome-stamp" aria-hidden="true">G</div>
+    </div>
+
+    <h1 data-hf-id="hf-zm4c" id="g01-welcome-headline" class="clip" data-start="0" data-duration="10" data-track-index="3">
+      <span data-hf-id="hf-g733" id="g01-welcome-less"><span data-hf-id="hf-lkoi" data-welcome-line="less">Less to</span><span data-hf-id="hf-1khm" data-welcome-line="less">juggle.</span></span>
+      <span data-hf-id="hf-7207" id="g01-welcome-more"><span data-hf-id="hf-ncca" data-welcome-line="more">More to</span><span data-hf-id="hf-qyhp" data-welcome-line="more">celebrate.</span></span>
+    </h1>
+
+    <div data-hf-id="hf-rzrs" id="g01-welcome-product" class="clip" data-start="0" data-duration="10" data-track-index="2">
+      <img data-hf-id="hf-um4v" id="g01-welcome-product-image" src="assets/overview.jpg" alt="Gatherly planning overview for a fictional neighborhood supper" />
+    </div>
+
+    <p data-hf-id="hf-o2x9" id="g01-welcome-support" class="clip" data-start="0" data-duration="10" data-track-index="4"><span data-hf-id="hf-s6jn">Your gathering.</span><span data-hf-id="hf-v73a">One thoughtful plan.</span></p>
+
+    <div data-hf-id="hf-rubd" id="g01-welcome-footer" class="clip" data-start="0" data-duration="10" data-track-index="5">
+      <span data-hf-id="hf-2qzl">STARTER-MODE DEMO · FICTIONAL DATA</span>
+      <span data-hf-id="hf-51sb">01 / 06</span>
+    </div>
+  </div>
+
+  <script>
+    (function () {
+      const welcomeTimeline = gsap.timeline({ paused: true });
+
+      welcomeTimeline.fromTo('[data-welcome-line="less"]',
+        { y: 32, opacity: 0 },
+        { y: 0, opacity: 1, duration: 0.9, stagger: 0.12, ease: 'power3.out' },
+        0.3);
+
+      welcomeTimeline.fromTo('[data-welcome-line="more"]',
+        { y: 32, opacity: 0 },
+        { y: 0, opacity: 1, duration: 0.9, stagger: 0.12, ease: 'power3.out' },
+        2.5);
+
+      welcomeTimeline.fromTo('#g01-welcome-product',
+        { x: 42, y: 24, opacity: 0, scale: 0.985 },
+        { x: 0, y: 0, opacity: 1, scale: 1, duration: 1.2, ease: 'power3.out' },
+        4);
+
+      welcomeTimeline.fromTo('#g01-welcome-support span',
+        { y: 18, opacity: 0 },
+        { y: 0, opacity: 1, duration: 0.8, stagger: 0.15, ease: 'power3.out' },
+        6.5);
+
+      welcomeTimeline.to({}, { duration: 2.55 }, 7.45);
+      window.__timelines = window.__timelines || {};
+      window.__timelines['01-welcome'] = welcomeTimeline;
+    })();
+  </script>
+</template>

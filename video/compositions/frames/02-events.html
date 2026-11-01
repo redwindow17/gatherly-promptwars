@@ -1,0 +1,242 @@
+<template>
+  <div data-hf-id="hf-htnh" id="root" data-composition-id="02-events" data-width="1920" data-height="1080">
+    <style>
+      #root {
+        position: relative;
+        width: 100%;
+        height: 100%;
+        overflow: hidden;
+        container-type: size;
+        color: #3A4034;
+        font-family: 'Gatherly Serif', serif;
+      }
+      [class~="g02-events-ground"], [class~="g02-events-content"] {
+        position: absolute;
+        inset: 0;
+      }
+      [class~="g02-events-ground"] { background: #F8F7F3; }
+      [class~="g02-events-content"] { box-sizing: border-box; }
+      [class~="g02-events-topbar"] {
+        position: absolute;
+        top: 6.481481cqh;
+        left: 5cqw;
+        right: 5cqw;
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        padding-bottom: 1.851852cqh;
+        border-bottom: 2px solid #3A4034;
+        font-family: 'Gatherly Sans', sans-serif;
+        font-size: 28px;
+        font-weight: 500;
+        line-height: 1.2;
+        letter-spacing: 0.14em;
+        text-transform: uppercase;
+      }
+      [class~="g02-events-headline"] {
+        position: absolute;
+        left: 5cqw;
+        top: 17.407407cqh;
+        width: 78cqw;
+        margin: 0;
+        font-family: 'Gatherly Serif', serif;
+        font-size: 4.6cqw;
+        font-weight: 500;
+        line-height: 1.02;
+        letter-spacing: -0.02em;
+      }
+      [class~="g02-events-payoff"] {
+        position: absolute;
+        left: 5cqw;
+        top: 29.166667cqh;
+        width: 88cqw;
+        margin: 0;
+        color: #2D493A;
+        font-family: 'Gatherly Serif', serif;
+        font-size: 1.875cqw;
+        font-weight: 400;
+        line-height: 1.35;
+      }
+      [class~="g02-events-grid"] {
+        position: absolute;
+        left: 5cqw;
+        top: 36.111111cqh;
+        width: 90cqw;
+        height: 42.592593cqh;
+        display: grid;
+        grid-template-columns: repeat(3, minmax(0, 1fr));
+        gap: 1.875cqw;
+        transform-origin: center top;
+      }
+      [class~="g02-events-card"] {
+        position: relative;
+        box-sizing: border-box;
+        border: 2px solid #3A4034;
+        border-radius: 6px;
+        overflow: hidden;
+      }
+      [class~="g02-events-wedding"] { background: #3A4034; color: #F8F7F3; }
+      [class~="g02-events-birthday"] { background: #6B765F; color: #F8F7F3; border-color: #6B765F; }
+      [class~="g02-events-community"] { background: #D5DAD0; color: #2D493A; }
+      [class~="g02-events-kind"] {
+        position: absolute;
+        top: 3.148148cqh;
+        left: 1.875cqw;
+        right: 1.875cqw;
+        margin: 0;
+        font-family: 'Gatherly Sans', sans-serif;
+        font-size: 28px;
+        font-weight: 500;
+        line-height: 1.2;
+        letter-spacing: 0.14em;
+        text-transform: uppercase;
+      }
+      [class~="g02-events-card-title"] {
+        position: absolute;
+        top: 8.703704cqh;
+        left: 1.875cqw;
+        right: 1.875cqw;
+        margin: 0;
+        font-family: 'Gatherly Serif', serif;
+        font-size: 2.708333cqw;
+        font-weight: 500;
+        line-height: 1.06;
+        letter-spacing: -0.01em;
+      }
+      [class~="g02-events-meta"] {
+        position: absolute;
+        top: 22.314815cqh;
+        left: 1.875cqw;
+        right: 1.875cqw;
+        margin: 0;
+        white-space: nowrap;
+        font-family: 'Gatherly Serif', serif;
+        font-size: 1.666667cqw;
+        font-weight: 400;
+        line-height: 1.35;
+      }
+      [class~="g02-events-birthday"] [class~="g02-events-card-title"] {
+        font-size: 2.291667cqw;
+      }
+      [class~="g02-events-budget"] {
+        position: absolute;
+        left: 1.875cqw;
+        right: 1.875cqw;
+        top: 29.259259cqh;
+        padding-top: 2.222222cqh;
+        border-top: 2px solid currentColor;
+        font-family: 'Gatherly Serif', serif;
+        font-size: 3.541667cqw;
+        font-weight: 500;
+        line-height: 1.02;
+        letter-spacing: -0.02em;
+        font-variant-numeric: lining-nums tabular-nums;
+      }
+      [class~="g02-events-footer-rule"] {
+        position: absolute;
+        left: 5cqw;
+        right: 5cqw;
+        top: 90.740741cqh;
+        border-top: 2px solid #3A4034;
+      }
+      [class~="g02-events-footer"] {
+        position: absolute;
+        top: 92.592593cqh;
+        left: 5cqw;
+        right: 5cqw;
+        display: flex;
+        justify-content: space-between;
+        align-items: baseline;
+        color: #3A4034;
+        font-family: 'Gatherly Sans', sans-serif;
+        font-size: 28px;
+        font-weight: 500;
+        line-height: 1.2;
+        letter-spacing: 0.12em;
+        text-transform: uppercase;
+      }
+    </style>
+
+    <div data-hf-id="hf-9enj" id="g02-events-ground" class="clip g02-events-ground" data-start="0" data-duration="12" data-track-index="0"></div>
+    <div data-hf-id="hf-4od2" id="g02-events-content" class="clip g02-events-content" data-start="0" data-duration="12" data-track-index="1">
+      <div data-hf-id="hf-d6xi" class="g02-events-topbar" data-motion="topbar">
+        <span data-hf-id="hf-fxq7">Made for your gathering</span>
+        <span data-hf-id="hf-w5i8">Sample briefs</span>
+      </div>
+      <h1 data-hf-id="hf-71m2" class="g02-events-headline" data-motion="headline">A plan for every kind of gathering.</h1>
+      <p data-hf-id="hf-fh4q" class="g02-events-payoff" data-motion="payoff">Budget, timeline, vendor checklist and ideas — together.</p>
+
+      <div data-hf-id="hf-54k6" class="g02-events-grid" data-motion="grid">
+        <article data-hf-id="hf-w48f" class="g02-events-card g02-events-wedding" data-motion="wedding">
+          <p data-hf-id="hf-gciz" class="g02-events-kind">Wedding</p>
+          <h2 data-hf-id="hf-acw1" class="g02-events-card-title">Ananya &amp; Kiran</h2>
+          <p data-hf-id="hf-j9en" class="g02-events-meta">120 guests · Chennai</p>
+          <div data-hf-id="hf-f88u" class="g02-events-budget" data-motion="wedding-budget">₹6,00,000</div>
+        </article>
+        <article data-hf-id="hf-x8ld" class="g02-events-card g02-events-birthday" data-motion="birthday">
+          <p data-hf-id="hf-jqw8" class="g02-events-kind">Birthday</p>
+          <h2 data-hf-id="hf-r4lm" class="g02-events-card-title">Meera's board-game<br data-hf-id="hf-x5px">birthday</h2>
+          <p data-hf-id="hf-m793" class="g02-events-meta">24 guests · Coimbatore</p>
+          <div data-hf-id="hf-kpdj" class="g02-events-budget" data-motion="birthday-budget">₹24,000</div>
+        </article>
+        <article data-hf-id="hf-q3f7" class="g02-events-card g02-events-community" data-motion="community">
+          <p data-hf-id="hf-21z6" class="g02-events-kind">Community</p>
+          <h2 data-hf-id="hf-lk2b" class="g02-events-card-title">Neighborhood<br data-hf-id="hf-rsrt">supper</h2>
+          <p data-hf-id="hf-315n" class="g02-events-meta">80 guests · Thanjavur</p>
+          <div data-hf-id="hf-06ka" class="g02-events-budget" data-motion="community-budget">₹50,000</div>
+        </article>
+      </div>
+
+      <div data-hf-id="hf-5f02" class="g02-events-footer-rule"></div>
+      <footer data-hf-id="hf-oput" class="g02-events-footer">
+        <span data-hf-id="hf-2qzl">STARTER-MODE DEMO · FICTIONAL DATA</span>
+        <span data-hf-id="hf-ui0s">02 / 06</span>
+      </footer>
+    </div>
+
+    <script>
+      (() => {
+        const composition = document.querySelector('[data-composition-id="02-events"]');
+        const part = (name) => composition.querySelector('[data-motion="' + name + '"]');
+        const timeline = gsap.timeline({ paused: true });
+        window.__timelines = window.__timelines || {};
+        window.__timelines['02-events'] = timeline;
+
+        timeline.fromTo(part('topbar'),
+          { opacity: 0, y: -10 },
+          { opacity: 1, y: 0, duration: 0.55, ease: 'power2.out' }, 0);
+        timeline.fromTo(part('headline'),
+          { opacity: 0, y: 22 },
+          { opacity: 1, y: 0, duration: 0.8, ease: 'power3.out' }, 0.08);
+        timeline.fromTo(part('grid'),
+          { scale: 0.992 },
+          { scale: 1, duration: 10.4, ease: 'none' }, 1.6);
+
+        timeline.fromTo(part('wedding'),
+          { opacity: 0, y: 34, scale: 0.985 },
+          { opacity: 1, y: 0, scale: 1, duration: 0.9, ease: 'power3.out' }, 1.6);
+        timeline.fromTo(part('wedding-budget'),
+          { opacity: 0, y: 14 },
+          { opacity: 1, y: 0, duration: 0.65, ease: 'power2.out' }, 2.15);
+
+        timeline.fromTo(part('birthday'),
+          { opacity: 0, y: 34, scale: 0.985 },
+          { opacity: 1, y: 0, scale: 1, duration: 0.9, ease: 'power3.out' }, 4.2);
+        timeline.fromTo(part('birthday-budget'),
+          { opacity: 0, y: 14 },
+          { opacity: 1, y: 0, duration: 0.65, ease: 'power2.out' }, 4.75);
+
+        timeline.fromTo(part('community'),
+          { opacity: 0, y: 34, scale: 0.985 },
+          { opacity: 1, y: 0, scale: 1, duration: 0.9, ease: 'power3.out' }, 6.8);
+        timeline.fromTo(part('community-budget'),
+          { opacity: 0, y: 14 },
+          { opacity: 1, y: 0, duration: 0.65, ease: 'power2.out' }, 7.35);
+
+        timeline.fromTo(part('payoff'),
+          { opacity: 0, y: 16 },
+          { opacity: 1, y: 0, duration: 0.8, ease: 'power2.out' }, 9);
+      })();
+    </script>
+  </div>
+</template>

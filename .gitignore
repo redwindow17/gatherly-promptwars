@@ -7,3 +7,5 @@ dist/
 coverage/
 *.log
 .superpowers/
+video/.hyperframes/
+video/renders/

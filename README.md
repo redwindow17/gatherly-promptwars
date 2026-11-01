@@ -6,6 +6,10 @@ Built for **PromptWars Virtual, Challenge 5: Celebration & Event Planner**.
 
 [Open Gatherly](https://gatherly-planner.halishrichard17.workers.dev). Deployment verified on 1 November 2026. The published app currently offers labelled starter plans; live Gemini generation awaits configuration of the server secret and a successful live test.
 
+[Watch the 75-second demo](https://gatherly-planner.halishrichard17.workers.dev/demo/) or [download the MP4](https://gatherly-planner.halishrichard17.workers.dev/demo/gatherly-demo.mp4). This silent HyperFrames walkthrough uses real app screenshots and fictional starter data, with optional English captions. It does not show live Gemini generation. The player, poster, captions, and video are served from `public/demo/` alongside the app.
+
+The editable HyperFrames composition and screenshots are in [`video/`](video/README.md).
+
 ## What works
 
 - **Gemini planning:** a server-side Google Gemini call returns structured suggestions tailored to the brief. The UI exposes the actual prompt, response, and model for inspection.

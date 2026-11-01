@@ -1,0 +1,59 @@
+<template>
+  <style>
+    #root { position: relative; width: 1920px; height: 1080px; overflow: hidden; container-type: size; color: #3A4034; }
+    #root * { box-sizing: border-box; }
+    #g04-progress-paper { position: absolute; inset: 0; background: #F8F7F3; }
+    #g04-progress-topbar { position: absolute; left: 85px; top: 44px; width: 1740px; display: flex; justify-content: space-between; font-family: 'Gatherly Sans', sans-serif; font-size: 28px; font-weight: 500; line-height: 1.2; letter-spacing: .14em; text-transform: uppercase; }
+    #g04-progress-toprule { position: absolute; left: 85px; top: 88px; width: 1740px; height: 2px; background: #3A4034; }
+    #g04-progress-title { position: absolute; left: 85px; top: 111px; width: 1695px; margin: 0; font-family: 'Gatherly Serif', serif; font-size: 3.54cqw; font-weight: 500; line-height: 1; letter-spacing: -.02em; }
+    #g04-progress-caption { position: absolute; left: 85px; top: 199px; width: 1500px; margin: 0; font-family: 'Gatherly Sans', sans-serif; font-size: 32px; font-weight: 400; line-height: 1.2; color: #2D493A; }
+    #g04-progress-surface { position: absolute; left: 85px; top: 250px; width: 1210px; height: 656px; border: 2px solid #D5DAD0; border-radius: 8px; overflow: hidden; }
+    #g04-progress-surface img { display: block; width: 100%; height: 100%; object-fit: contain; }
+    #g04-progress-fact-one, #g04-progress-fact-two, #g04-progress-fact-three { position: absolute; left: 1360px; width: 465px; border-top: 2px solid #6B765F; }
+    #g04-progress-fact-one { top: 284px; height: 190px; }
+    #g04-progress-fact-two { top: 504px; height: 216px; }
+    #g04-progress-fact-three { top: 756px; height: 150px; }
+    [class="g04-progress-figure"] { margin: 19px 0 11px; font-family: 'Gatherly Serif', serif; font-size: 4.58cqw; font-weight: 500; line-height: 1; letter-spacing: -.03em; }
+    [class="g04-progress-body"] { margin: 0; font-family: 'Gatherly Sans', sans-serif; font-size: 36px; font-weight: 400; line-height: 1.22; color: #2D493A; }
+    #g04-progress-next { margin: 25px 0 15px; font-family: 'Gatherly Serif', serif; font-size: 2.29cqw; font-weight: 500; line-height: 1; letter-spacing: -.01em; }
+    #g04-progress-local { margin: 0; font-family: 'Gatherly Sans', sans-serif; font-size: 34px; font-weight: 400; line-height: 1.2; color: #2D493A; }
+    #g04-progress-footrule { position: absolute; left: 85px; top: 980px; width: 1740px; height: 2px; background: #3A4034; }
+    #g04-progress-footer { position: absolute; left: 85px; top: 1000px; width: 1740px; display: flex; justify-content: space-between; font-family: 'Gatherly Sans', sans-serif; font-size: 28px; font-weight: 500; line-height: 1.2; letter-spacing: .14em; text-transform: uppercase; }
+  </style>
+  <div data-hf-id="hf-z7d1" id="root" data-composition-id="04-progress" data-duration="13" data-width="1920" data-height="1080">
+    <div data-hf-id="hf-dzi8" id="g04-progress-paper" class="clip" data-start="0" data-duration="13" data-track-index="0"></div>
+    <div data-hf-id="hf-afa9" id="g04-progress-topbar"><span data-hf-id="hf-sdb6">Gatherly · plan progress</span><span data-hf-id="hf-0aii">One small step</span></div>
+    <div data-hf-id="hf-k9fg" id="g04-progress-toprule"></div>
+    <h1 data-hf-id="hf-ciof" id="g04-progress-title">One small step. A little less to juggle.</h1>
+    <p data-hf-id="hf-2qaw" id="g04-progress-caption">Timeline · vendor checklist · local saves</p>
+    <div data-hf-id="hf-mtf6" id="g04-progress-surface"><img data-hf-id="hf-bzau" src="assets/overview.jpg" alt="Saved Gatherly plan overview showing 2 of 10 tasks done" /></div>
+    <div data-hf-id="hf-zv78" id="g04-progress-fact-one">
+      <p data-hf-id="hf-5nw9" class="g04-progress-figure">2 of 10</p>
+      <p data-hf-id="hf-wvyu" class="g04-progress-body">tasks complete</p>
+    </div>
+    <div data-hf-id="hf-mce6" id="g04-progress-fact-two">
+      <p data-hf-id="hf-7dn3" class="g04-progress-figure">2</p>
+      <p data-hf-id="hf-fh85" class="g04-progress-body">vendor questions<br data-hf-id="hf-x5px" />checked</p>
+    </div>
+    <div data-hf-id="hf-sad4" id="g04-progress-fact-three">
+      <p data-hf-id="hf-wndq" id="g04-progress-next">Assign owners.</p>
+      <p data-hf-id="hf-yefr" id="g04-progress-local">Save in this browser.</p>
+    </div>
+    <div data-hf-id="hf-bkm7" id="g04-progress-footrule"></div>
+    <div data-hf-id="hf-ifvk" id="g04-progress-footer"><span data-hf-id="hf-360x">Starter-mode demo · fictional data</span><span data-hf-id="hf-xz5e">04 / 06</span></div>
+  </div>
+  <script>
+    (function () {
+      const tl = gsap.timeline({ paused: true });
+      tl.fromTo('#g04-progress-title', { opacity: 0, y: 14 }, { opacity: 1, y: 0, duration: 0.55, ease: 'power2.out' }, 0);
+      tl.fromTo('#g04-progress-caption', { opacity: 0, y: 10 }, { opacity: 1, y: 0, duration: 0.5, ease: 'power2.out' }, 1.2);
+      tl.fromTo('#g04-progress-surface', { opacity: 0 }, { opacity: 1, duration: 0.65, ease: 'power1.out' }, 2);
+      tl.fromTo('#g04-progress-fact-one', { opacity: 0, y: 16 }, { opacity: 1, y: 0, duration: 0.65, ease: 'power2.out' }, 4);
+      tl.fromTo('#g04-progress-fact-two', { opacity: 0, y: 16 }, { opacity: 1, y: 0, duration: 0.65, ease: 'power2.out' }, 7);
+      tl.fromTo('#g04-progress-fact-three', { opacity: 0, y: 16 }, { opacity: 1, y: 0, duration: 0.65, ease: 'power2.out' }, 10);
+      tl.to({}, { duration: 2.35 }, 10.65);
+      window.__timelines = window.__timelines || {};
+      window.__timelines['04-progress'] = tl;
+    })();
+  </script>
+</template>

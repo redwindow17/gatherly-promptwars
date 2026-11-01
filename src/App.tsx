@@ -488,10 +488,21 @@ export default function App() {
                     : 'Welcome'}
               </span>
             </div>
-            <span className="topbar-signoff">
-              A little intention. A lovely gathering.
-              <Leaf size={15} strokeWidth={1.3} />
-            </span>
+            <div className="topbar-actions">
+              <a
+                className="demo-link"
+                href="/demo/"
+                target="_blank"
+                rel="noopener"
+                aria-label="Watch demo (opens in a new tab)"
+              >
+                Watch demo <ArrowRight size={14} aria-hidden="true" />
+              </a>
+              <span className="topbar-signoff">
+                A little intention. A lovely gathering.
+                <Leaf size={15} strokeWidth={1.3} />
+              </span>
+            </div>
           </header>
           <main
             id="main-content"

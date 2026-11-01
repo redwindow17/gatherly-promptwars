@@ -1,0 +1,252 @@
+<template>
+  <div data-hf-id="hf-telt" id="root" data-composition-id="03-budget" data-duration="16" data-width="1920" data-height="1080">
+    <div data-hf-id="hf-zd75" id="g03-budget-ground" class="clip" data-start="0" data-duration="16" data-track-index="0"></div>
+
+    <div data-hf-id="hf-jfzo" id="g03-budget-topbar">
+      <span data-hf-id="hf-woul">GATHERLY</span>
+      <span data-hf-id="hf-7il8">BUDGET</span>
+    </div>
+
+    <h1 data-hf-id="hf-o2hg" id="g03-budget-title">Keep the celebration in budget.</h1>
+
+    <figure data-hf-id="hf-gh84" id="g03-budget-surface" aria-label="Captured Gatherly budget screen displaying a temporary ₹5,000 overspend warning">
+      <img data-hf-id="hf-vgyx" src="assets/budget.jpg" width="1513" height="820" alt="The real Gatherly budget view: ₹50,000 total budget, ₹5,000 contingency reserve, and a ₹5,000 over-budget warning with editable allocations.">
+    </figure>
+
+    <div data-hf-id="hf-n90n" id="g03-budget-reserve" aria-label="10% held in reserve">
+      <div data-hf-id="hf-cg0j" id="g03-budget-reserve-rule"></div>
+      <div data-hf-id="hf-a6a0" id="g03-budget-reserve-value">10%</div>
+      <div data-hf-id="hf-pbsw" id="g03-budget-reserve-copy">held in reserve</div>
+    </div>
+
+    <div data-hf-id="hf-z16m" id="g03-budget-warning" aria-label="₹5,000 over? See it immediately.">
+      <div data-hf-id="hf-se5b" id="g03-budget-warning-rule"></div>
+      <div data-hf-id="hf-1ye5" id="g03-budget-warning-value">₹5,000 over?</div>
+      <div data-hf-id="hf-fj6e" id="g03-budget-warning-copy">See it immediately.</div>
+    </div>
+
+    <div data-hf-id="hf-4pz9" id="g03-budget-allocations">
+      <div data-hf-id="hf-fsa0" id="g03-budget-allocations-rule"></div>
+      <div data-hf-id="hf-gpp3" id="g03-budget-allocations-title">Edit allocations.</div>
+      <div data-hf-id="hf-aiv6" id="g03-budget-allocations-copy">Keep the trade-offs<br data-hf-id="hf-x5px">visible.</div>
+    </div>
+
+    <p data-hf-id="hf-wcix" id="g03-budget-note">Shown: a temporary demo budget increase, then restored.</p>
+
+    <div data-hf-id="hf-dg9d" id="g03-budget-footer">
+      <span data-hf-id="hf-2qzl">STARTER-MODE DEMO · FICTIONAL DATA</span>
+      <span data-hf-id="hf-si15">03 / 06</span>
+    </div>
+  </div>
+
+  <style>
+    #root {
+      position: relative;
+      width: 1920px;
+      height: 1080px;
+      overflow: hidden;
+      container-type: size;
+      color: #2D493A;
+      font-family: 'Gatherly Sans', sans-serif;
+      font-weight: 400;
+    }
+
+    #g03-budget-ground {
+      position: absolute;
+      inset: 0;
+      background: #F8F7F3;
+    }
+
+    #g03-budget-topbar {
+      position: absolute;
+      left: 4.6875cqw;
+      top: 7.777778cqh;
+      width: 90.625cqw;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      font-family: 'Gatherly Sans', sans-serif;
+      font-size: 28px;
+      line-height: 1;
+      font-weight: 500;
+      letter-spacing: 0.18em;
+      color: #2D493A;
+    }
+
+    #g03-budget-title {
+      position: absolute;
+      left: 4.6875cqw;
+      top: 12.037037cqh;
+      width: 90.625cqw;
+      margin: 0;
+      font-family: 'Gatherly Serif', serif;
+      font-size: 3.75cqw;
+      font-weight: 500;
+      font-optical-sizing: auto;
+      line-height: 0.98;
+      letter-spacing: -0.02em;
+      color: #3A4034;
+    }
+
+    #g03-budget-surface {
+      position: absolute;
+      left: 28.645833cqw;
+      top: 20.370370cqh;
+      width: 66.666667cqw;
+      height: 64.259259cqh;
+      box-sizing: border-box;
+      margin: 0;
+      overflow: hidden;
+      border: 2px solid #3A4034;
+      border-radius: 6px;
+      background: #F8F7F3;
+    }
+
+    #g03-budget-surface img {
+      display: block;
+      width: 100%;
+      height: 100%;
+      object-fit: contain;
+    }
+
+    #g03-budget-reserve,
+    #g03-budget-warning,
+    #g03-budget-allocations {
+      position: absolute;
+      left: 4.6875cqw;
+      width: 20.833333cqw;
+    }
+
+    #g03-budget-reserve { top: 24.074074cqh; }
+    #g03-budget-warning { top: 44.444444cqh; }
+    #g03-budget-allocations { top: 63.888889cqh; }
+
+    #g03-budget-reserve-rule,
+    #g03-budget-warning-rule,
+    #g03-budget-allocations-rule {
+      width: 18.75cqw;
+      height: 2px;
+      background: #3A4034;
+      transform-origin: left center;
+    }
+
+    #g03-budget-reserve-value {
+      margin-top: 1.145833cqw;
+      font-family: 'Gatherly Serif', serif;
+      font-size: 4.583333cqw;
+      font-weight: 500;
+      font-optical-sizing: auto;
+      line-height: 0.98;
+      letter-spacing: -0.03em;
+      color: #3A4034;
+    }
+
+    #g03-budget-reserve-copy,
+    #g03-budget-warning-copy,
+    #g03-budget-allocations-copy {
+      margin-top: 0.729167cqw;
+      font-family: 'Gatherly Sans', sans-serif;
+      font-size: 1.5625cqw;
+      font-weight: 400;
+      line-height: 1.32;
+      color: #2D493A;
+    }
+
+    #g03-budget-warning-value,
+    #g03-budget-allocations-title {
+      margin-top: 1.25cqw;
+      font-family: 'Gatherly Serif', serif;
+      font-size: 2.291667cqw;
+      font-weight: 500;
+      font-optical-sizing: auto;
+      line-height: 1.04;
+      letter-spacing: -0.02em;
+      color: #3A4034;
+    }
+
+    #g03-budget-warning-value { color: #B78265; }
+
+    #g03-budget-note {
+      position: absolute;
+      left: 4.6875cqw;
+      top: 87.222222cqh;
+      width: 90.625cqw;
+      margin: 0;
+      font-family: 'Gatherly Sans', sans-serif;
+      font-size: 28px;
+      font-weight: 400;
+      line-height: 1.2;
+      color: #2D493A;
+    }
+
+    #g03-budget-footer {
+      position: absolute;
+      left: 4.6875cqw;
+      top: 92.592593cqh;
+      width: 90.625cqw;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      font-family: 'Gatherly Sans', sans-serif;
+      font-size: 28px;
+      font-weight: 500;
+      line-height: 1.2;
+      letter-spacing: 0.14em;
+      color: #2D493A;
+    }
+  </style>
+
+  <script>
+    (function () {
+      const budgetRoot = document.querySelector('[data-composition-id="03-budget"]');
+      const budgetElement = function (name) {
+        return budgetRoot.querySelector('[id="g03-budget-' + name + '"]');
+      };
+      const budgetTimeline = gsap.timeline({ paused: true });
+
+      budgetTimeline.fromTo(budgetElement('topbar'),
+        { opacity: 0, y: 8 },
+        { opacity: 1, y: 0, duration: 0.5, ease: 'power2.out' }, 0.05);
+      budgetTimeline.fromTo(budgetElement('title'),
+        { opacity: 0, y: 14 },
+        { opacity: 1, y: 0, duration: 0.7, ease: 'power2.out' }, 0.15);
+      budgetTimeline.fromTo(budgetElement('footer'),
+        { opacity: 0 },
+        { opacity: 1, duration: 0.5, ease: 'none' }, 0.1);
+
+      // The supplied still is the complete UI. It enters once, then stays locked.
+      budgetTimeline.fromTo(budgetElement('surface'),
+        { opacity: 0, x: 24 },
+        { opacity: 1, x: 0, duration: 0.8, ease: 'power2.out' }, 1.5);
+
+      budgetTimeline.fromTo(budgetElement('reserve'),
+        { opacity: 0, y: 14 },
+        { opacity: 1, y: 0, duration: 0.65, ease: 'power2.out' }, 4);
+      budgetTimeline.fromTo(budgetElement('reserve-rule'),
+        { scaleX: 0 },
+        { scaleX: 1, duration: 0.7, ease: 'power2.out' }, 4);
+
+      budgetTimeline.fromTo(budgetElement('warning'),
+        { opacity: 0, y: 14 },
+        { opacity: 1, y: 0, duration: 0.65, ease: 'power2.out' }, 8);
+      budgetTimeline.fromTo(budgetElement('warning-rule'),
+        { scaleX: 0 },
+        { scaleX: 1, duration: 0.7, ease: 'power2.out' }, 8);
+
+      budgetTimeline.fromTo(budgetElement('allocations'),
+        { opacity: 0, y: 14 },
+        { opacity: 1, y: 0, duration: 0.65, ease: 'power2.out' }, 12);
+      budgetTimeline.fromTo(budgetElement('allocations-rule'),
+        { scaleX: 0 },
+        { scaleX: 1, duration: 0.7, ease: 'power2.out' }, 12);
+
+      budgetTimeline.fromTo(budgetElement('note'),
+        { opacity: 0, y: 6 },
+        { opacity: 1, y: 0, duration: 0.6, ease: 'power2.out' }, 12.8);
+      budgetTimeline.to({}, { duration: 16, ease: 'none' }, 0);
+
+      window.__timelines = window.__timelines || {};
+      window.__timelines['03-budget'] = budgetTimeline;
+    }());
+  </script>
+</template>

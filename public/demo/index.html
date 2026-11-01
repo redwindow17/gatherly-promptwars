@@ -1,0 +1,102 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <meta name="theme-color" content="#f8f7f4" />
+    <meta
+      name="description"
+      content="Watch Gatherly's starter-template demonstration: fictional wedding, birthday, and community plans with editable budgets, timelines, and vendor checklists."
+    />
+    <title>Watch the demo · Gatherly</title>
+    <link rel="stylesheet" href="/demo/styles.css" />
+  </head>
+  <body>
+    <a class="skip-link" href="#demo">Skip to the demo</a>
+    <header class="site-header">
+      <a class="brand" href="/" aria-label="Gatherly home">gatherly<span>.</span></a>
+      <nav aria-label="Demo navigation">
+        <a href="https://github.com/redwindow17/gatherly-promptwars">View source</a>
+        <a class="button" href="/">Open planner <span aria-hidden="true">↗</span></a>
+      </nav>
+    </header>
+
+    <main id="demo">
+      <section class="introduction" aria-labelledby="demo-title">
+        <p class="eyebrow">A look inside Gatherly</p>
+        <h1 id="demo-title">A little planning.<br /><em>A lot to celebrate.</em></h1>
+        <p class="introduction-copy">
+          Take a tour of an editable celebration plan, from the first budget to the final little
+          checklist.
+        </p>
+        <p class="demo-status" id="demo-status">
+          <strong>Starter-template demo</strong>
+          <span>Fictional sample data · Authored templates · No live Gemini generation</span>
+        </p>
+      </section>
+
+      <figure class="video-frame">
+        <video
+          controls
+          preload="metadata"
+          playsinline
+          width="1920"
+          height="1080"
+          poster="/demo/poster.jpg"
+          aria-label="Gatherly demonstration using fictional starter plans"
+          aria-describedby="demo-status video-caption"
+        >
+          <source src="/demo/gatherly-demo.mp4" type="video/mp4" />
+          <track kind="captions" src="/demo/captions.vtt" srclang="en" label="English" default />
+          Your browser does not support the video player.
+          <a href="/demo/gatherly-demo.mp4">Open the MP4 video</a>.
+        </video>
+        <figcaption id="video-caption">
+          <span>75-second silent screenshot walkthrough · Created with HyperFrames.</span>
+          <a href="/demo/gatherly-demo.mp4" download="gatherly-demo.mp4"
+            >Download MP4 <span aria-hidden="true">↓</span></a
+          >
+        </figcaption>
+      </figure>
+
+      <section class="tour-details" aria-labelledby="tour-heading">
+        <div>
+          <h2 id="tour-heading">Make the plan your own.</h2>
+          <p>
+            Explore wedding, birthday, and community-event examples. Adjust estimates, check off
+            tasks, and keep the questions for your vendors in one place.
+          </p>
+        </div>
+        <dl>
+          <div>
+            <dt>Budget</dt>
+            <dd>Editable categories, a visible reserve, and overspend feedback.</dd>
+          </div>
+          <div>
+            <dt>Details</dt>
+            <dd>Dated tasks, assigned owners, vendor questions, and event ideas.</dd>
+          </div>
+          <div>
+            <dt>Saved plans</dt>
+            <dd>Your edits stay in the browser where you create them.</dd>
+          </div>
+        </dl>
+      </section>
+
+      <aside class="source-note" aria-label="About this demonstration">
+        <h2>A clear look at what you’re seeing.</h2>
+        <p>
+          This produced screenshot walkthrough uses authored starter templates and fictional events.
+          It does not show a live Gemini request or response. Live Gemini generation still requires
+          a configured server key and verification. Costs are planning estimates; vendor checklists
+          do not represent verified quotes or bookings.
+        </p>
+      </aside>
+    </main>
+
+    <footer class="site-footer">
+      <p>Thoughtfully planned. Happily gathered.</p>
+      <a href="/">Start your own gathering <span aria-hidden="true">→</span></a>
+    </footer>
+  </body>
+</html>
