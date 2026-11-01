@@ -15,6 +15,8 @@ npx --yes hyperframes@0.8.226 render --fps 30 --crf 22 --workers 1 --no-best-eff
 
 Edit `compositions/frames/01-welcome.html` through `06-try.html` to revise individual scenes. `STORYBOARD.md` records their timings and `frame.md` records the visual direction. The assembled `index.html` uses a local GSAP 3.15.0 runtime so the animation library does not depend on a CDN at render time.
 
+After replacing the MP4, run `npm run build` from the app root before deployment. It regenerates the video size and SHA-256 metadata used for range requests; an automated check verifies that the metadata matches the exact video file.
+
 Source Serif 4 and Inter are bundled in `assets/fonts/` with their SIL Open Font Licenses. The local aliases `Gatherly Serif` and `Gatherly Sans` keep preview and export typography consistent. Keep the explicit `@font-face` declarations in `index.html` when editing.
 
 The completed composition passed HyperFrames lint, runtime, layout, motion, and contrast checks. Scene posters and cuts were visually inspected. The encoded MP4 was decoded completely and verified as H.264, yuv420p, 2,250 frames, exactly 75 seconds.

@@ -166,4 +166,67 @@ describe('demo video byte ranges', () => {
     expect(response.headers.has('content-range')).toBe(false);
     expect(await response.text()).toBe(text);
   });
+
+  it.each([undefined, 'invalid', '999999999999999999999'])(
+    'uses a known size when the asset Content-Length is %s',
+    async (contentLength) => {
+      const headers = new Headers({ 'content-type': 'video/mp4' });
+      if (contentLength !== undefined) headers.set('content-length', contentLength);
+      const response = await handleDemoVideo(
+        request('bytes=4-6'),
+        { fetch: async () => new Response(text, { headers }) },
+        10,
+      );
+      expect(response.status).toBe(206);
+      expect(response.headers.get('content-range')).toBe('bytes 4-6/10');
+      expect(response.headers.get('content-length')).toBe('3');
+      expect(response.headers.get('accept-ranges')).toBe('bytes');
+      expect(await response.text()).toBe('456');
+    },
+  );
+
+  it.each([-1, 1.5, NaN, Infinity, Number.MAX_SAFE_INTEGER + 1])(
+    'ignores invalid known size %s',
+    async (knownSize) => {
+      const response = await handleDemoVideo(
+        request('bytes=0-1'),
+        { fetch: async () => new Response(text) },
+        knownSize,
+      );
+      expect(response.status).toBe(200);
+      expect(response.headers.has('content-range')).toBe(false);
+      expect(response.headers.has('accept-ranges')).toBe(false);
+      expect(await response.text()).toBe(text);
+    },
+  );
+
+  it('provides the known full length for HEAD when the asset omits it', async () => {
+    const response = await handleDemoVideo(
+      new Request(url, { method: 'HEAD' }),
+      { fetch: async () => new Response(null, { headers: { 'content-type': 'video/mp4' } }) },
+      10,
+    );
+    expect(response.status).toBe(200);
+    expect(response.headers.get('content-length')).toBe('10');
+    expect(response.headers.get('accept-ranges')).toBe('bytes');
+    expect(response.body).toBeNull();
+  });
+
+  it('prefers a valid asset Content-Length over the fallback', async () => {
+    const response = await handleDemoVideo(request('bytes=-3'), source(), 999);
+    expect(response.headers.get('content-range')).toBe('bytes 7-9/10');
+    expect(await response.text()).toBe('789');
+  });
+
+  it('does not apply the known size to an encoded asset', async () => {
+    const response = await handleDemoVideo(
+      request('bytes=0-1'),
+      { fetch: async () => new Response(text, { headers: { 'content-encoding': 'gzip' } }) },
+      10,
+    );
+    expect(response.status).toBe(200);
+    expect(response.headers.has('content-range')).toBe(false);
+    expect(response.headers.has('content-length')).toBe(false);
+    expect(await response.text()).toBe(text);
+  });
 });

@@ -5,6 +5,7 @@
   "type": "module",
   "scripts": {
     "dev": "vite --host 127.0.0.1",
+    "prebuild": "node scripts/video-metadata.mjs",
     "build": "npm run check && vite build",
     "test": "vitest run",
     "test:watch": "vitest",
@@ -12,7 +13,7 @@
     "worker:dev": "wrangler dev --port 8787",
     "deploy": "npm run build && wrangler deploy",
     "check": "tsc --noEmit && tsc --noEmit -p tsconfig.worker.json && tsc --noEmit -p tsconfig.tests.json && tsc --noEmit -p tsconfig.ui-tests.json",
-    "format:check": "prettier --check src worker tests package.json tsconfig*.json vite.config.ts wrangler.jsonc index.html README.md",
+    "format:check": "prettier --check src worker tests scripts package.json tsconfig*.json vite.config.ts wrangler.jsonc index.html README.md",
     "types": "wrangler types worker/env.d.ts"
   },
   "dependencies": {

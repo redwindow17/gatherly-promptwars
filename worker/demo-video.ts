@@ -56,7 +56,11 @@ function sliceStream(body: ReadableStream<Uint8Array>, start: number, end: numbe
   );
 }
 
-export async function handleDemoVideo(request: Request, assets: AssetSource): Promise<Response> {
+export async function handleDemoVideo(
+  request: Request,
+  assets: AssetSource,
+  knownSize?: number,
+): Promise<Response> {
   if (request.method !== 'GET' && request.method !== 'HEAD') return assets.fetch(request);
   const rangeHeader = request.method === 'GET' ? request.headers.get('range') : null;
   const upstreamHeaders = new Headers(request.headers);
@@ -66,9 +70,14 @@ export async function handleDemoVideo(request: Request, assets: AssetSource): Pr
   if (upstream.status !== 200) return upstream;
   const headers = new Headers(upstream.headers);
   const rawSize = headers.get('content-length');
-  const size = rawSize && /^\d+$/.test(rawSize) ? Number(rawSize) : NaN;
+  const headerSize = rawSize && /^\d+$/.test(rawSize) ? Number(rawSize) : NaN;
+  const size =
+    Number.isSafeInteger(headerSize) && headerSize >= 0 ? headerSize : (knownSize ?? NaN);
   const canSlice = Number.isSafeInteger(size) && size >= 0 && !headers.has('content-encoding');
-  if (canSlice) headers.set('accept-ranges', 'bytes');
+  if (canSlice) {
+    headers.set('accept-ranges', 'bytes');
+    headers.set('content-length', String(size));
+  }
   if (request.method === 'HEAD') {
     await upstream.body?.cancel();
     return new Response(null, { status: 200, headers });
