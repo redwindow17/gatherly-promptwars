@@ -162,6 +162,7 @@ export default function App() {
   const [busy, setBusy] = useState(false);
   const [error, setError] = useState(initial.error);
   const [storageError, setStorageError] = useState('');
+  const [changesSaved, setChangesSaved] = useState(true);
   const [notification, setNotification] = useState('');
   const [showHelp, setShowHelp] = useState(false);
   const errorRef = useRef<HTMLDivElement>(null);
@@ -208,12 +209,13 @@ export default function App() {
   }, [notification]);
 
   function store(next: Plan[]) {
-    const trimmed = next.slice(0, 12);
-    setPlans(trimmed);
+    setPlans(next);
     try {
-      savePlans(trimmed);
+      savePlans(next);
+      setChangesSaved(true);
       setStorageError('');
     } catch (cause) {
+      setChangesSaved(false);
       setStorageError(
         cause instanceof Error
           ? cause.message
@@ -248,6 +250,12 @@ export default function App() {
   }
   async function generate(brief: EventBrief, source: 'gemini' | 'starter') {
     if (busy) return;
+    if (plans.length >= 12) {
+      focusError(
+        'You already have 12 plans in this browser. Print or export a plan you want to keep, then explicitly delete an existing plan before creating a new or revised plan. Your existing plans and edits are unchanged.',
+      );
+      return;
+    }
     setBusy(true);
     setError('');
     try {
@@ -684,7 +692,7 @@ export default function App() {
                 <footer className="workspace-footer">
                   <span>
                     <Check size={12} />
-                    {storageError ? 'Changes in this tab only' : 'Changes saved in this browser'}
+                    {changesSaved ? 'Changes saved in this browser' : 'Changes in this tab only'}
                   </span>
                   <span>Thoughtfully planned. Happily gathered.</span>
                 </footer>

@@ -57,25 +57,28 @@ function req(body: unknown = brief, headers: Record<string, string> = {}) {
   });
 }
 function provider(value: unknown = advice) {
-  return vi
-    .fn<typeof fetch>()
-    .mockResolvedValue(
-      new Response(
-        JSON.stringify({
-          candidates: [
-            { finishReason: 'STOP', content: { parts: [{ text: JSON.stringify(value) }] } },
-          ],
-        }),
-        { headers: { 'content-type': 'application/json' } },
-      ),
-    );
+  return vi.fn<typeof fetch>().mockResolvedValue(
+    new Response(
+      JSON.stringify({
+        candidates: [
+          { finishReason: 'STOP', content: { parts: [{ text: JSON.stringify(value) }] } },
+        ],
+      }),
+      { headers: { 'content-type': 'application/json' } },
+    ),
+  );
 }
 
 describe('planning API boundary', () => {
   it('times out a stalled provider request and preserves a controlled error', async () => {
-    const fetcher = vi.fn<typeof fetch>().mockImplementation((_url, options) => new Promise((_resolve, reject) => {
-      options?.signal?.addEventListener('abort', () => reject(new DOMException('Aborted', 'AbortError')));
-    }));
+    const fetcher = vi.fn<typeof fetch>().mockImplementation(
+      (_url, options) =>
+        new Promise((_resolve, reject) => {
+          options?.signal?.addEventListener('abort', () =>
+            reject(new DOMException('Aborted', 'AbortError')),
+          );
+        }),
+    );
     const pending = handleApi(req(), env, fetcher);
     await vi.advanceTimersByTimeAsync(35_001);
     const response = await pending;
@@ -186,20 +189,18 @@ describe('planning API boundary', () => {
     expect(await r.text()).not.toContain('private');
   });
   it('rejects incomplete generations instead of parsing truncated output', async () => {
-    const fetcher = vi
-      .fn<typeof fetch>()
-      .mockResolvedValue(
-        new Response(
-          JSON.stringify({
-            candidates: [
-              {
-                finishReason: 'MAX_TOKENS',
-                content: { parts: [{ text: JSON.stringify(advice) }] },
-              },
-            ],
-          }),
-        ),
-      );
+    const fetcher = vi.fn<typeof fetch>().mockResolvedValue(
+      new Response(
+        JSON.stringify({
+          candidates: [
+            {
+              finishReason: 'MAX_TOKENS',
+              content: { parts: [{ text: JSON.stringify(advice) }] },
+            },
+          ],
+        }),
+      ),
+    );
     const r = await handleApi(req(), env, fetcher);
     expect(r.status).toBe(502);
   });

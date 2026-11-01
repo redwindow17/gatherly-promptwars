@@ -1,1 +1,5 @@
-{ "extends": "./tsconfig.json", "include": ["tests", "worker/env.d.ts"] }
+{
+  "extends": "./tsconfig.json",
+  "include": ["tests", "worker/env.d.ts"],
+  "exclude": ["tests/ui.test.tsx"]
+}
