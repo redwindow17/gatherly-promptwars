@@ -70,7 +70,7 @@ npm audit
 npx wrangler deploy --dry-run
 ```
 
-The 68 tests cover money allocation and overspend, invalid input, timezone boundaries, urgent tasks, calendar text injection/line folding, corrupt local storage and failed recovery, provider errors/timeouts, bounded input/output, cross-origin requests, and rate limiting. Rendered UI regressions verify that dismissing a failed-save warning cannot falsely report saved changes, and that a full library preserves all existing plans before any generation call. Provider tests use synthetic responses; they do not prove a live Google account has working quota.
+The 94 tests cover money allocation and overspend, invalid input, timezone boundaries, urgent tasks, calendar text injection/line folding, corrupt local storage and failed recovery, provider errors/timeouts, bounded input/output, cross-origin requests, rate limiting, and streamed video byte ranges. Rendered UI regressions verify that dismissing a failed-save warning cannot falsely report saved changes, and that a full library preserves all existing plans before any generation call. Provider tests use synthetic responses; they do not prove a live Google account has working quota.
 
 | Review area       | Implementation evidence                                                                                       |
 | ----------------- | ------------------------------------------------------------------------------------------------------------- |
