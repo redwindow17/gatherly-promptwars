@@ -4,6 +4,8 @@ A celebration planner for weddings, birthdays, and community events. Turn an eve
 
 Built for **PromptWars Virtual, Challenge 5: Celebration & Event Planner**.
 
+[Open Gatherly](https://gatherly-planner.halishrichard17.workers.dev). Deployment verified on 1 November 2026. The published app currently offers labelled starter plans; live Gemini generation awaits configuration of the server secret and a successful live test.
+
 ## What works
 
 - **Gemini planning:** a server-side Google Gemini call returns structured suggestions tailored to the brief. The UI exposes the actual prompt, response, and model for inspection.
